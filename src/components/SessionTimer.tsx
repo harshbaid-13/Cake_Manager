@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useEffect, useMemo, useState } from "react";
 
@@ -20,15 +20,20 @@ export function SessionTimer() {
   const [active, setActive] = useState<Session | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const loadActive = async () => {
-    const res = await fetch("/api/sessions", { cache: "no-store" });
-    if (!res.ok) return;
-    const data = await res.json();
-    setActive(data.activeSession ?? null);
-  };
-
   useEffect(() => {
-    void loadActive();
+    let ignore = false;
+    void (async () => {
+      const res = await fetch("/api/sessions", { cache: "no-store" });
+      if (!res.ok) return;
+      const data = await res.json();
+      if (!ignore) {
+        setActive(data.activeSession ?? null);
+      }
+    })();
+
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   const startSession = async () => {
@@ -52,7 +57,7 @@ export function SessionTimer() {
   const elapsedMs = useMemo(() => {
     if (!active) return 0;
     const start = new Date(active.startTime).getTime();
-    const end = Date.now();
+    const end = new Date().getTime();
     return end - start;
   }, [active]);
 
@@ -60,7 +65,7 @@ export function SessionTimer() {
     if (!active) return;
     const interval = setInterval(() => {
       setActive((current) =>
-        current ? { ...current, endTime: current.endTime } : current,
+        current ? { ...current, endTime: current.endTime } : current
       );
     }, 60000);
     return () => clearInterval(interval);
@@ -100,5 +105,3 @@ export function SessionTimer() {
     </div>
   );
 }
-
-

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useEffect, useState } from "react";
 
@@ -30,7 +30,9 @@ export default function ExpensesPage() {
   };
 
   useEffect(() => {
-    void load();
+    void (async () => {
+      await load();
+    })();
   }, []);
 
   const submit = async (e: React.FormEvent) => {
@@ -92,9 +94,7 @@ export default function ExpensesPage() {
           />
           <input
             value={form.amount}
-            onChange={(e) =>
-              setForm((f) => ({ ...f, amount: e.target.value }))
-            }
+            onChange={(e) => setForm((f) => ({ ...f, amount: e.target.value }))}
             placeholder="₹450"
             inputMode="decimal"
             className="w-full rounded-lg border border-gray-200 px-3 py-2"
@@ -142,5 +142,3 @@ export default function ExpensesPage() {
     </div>
   );
 }
-
-

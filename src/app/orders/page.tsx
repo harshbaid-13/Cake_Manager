@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useEffect, useMemo, useState } from "react";
 
@@ -43,7 +43,9 @@ export default function OrdersPage() {
   };
 
   useEffect(() => {
-    void loadData();
+    void (async () => {
+      await loadData();
+    })();
   }, []);
 
   const selectedRecipeCost = useMemo(() => {
@@ -62,7 +64,9 @@ export default function OrdersPage() {
         ...form,
         quotedPrice: Number(form.quotedPrice),
         estimatedCost:
-          form.recipeId === "custom" ? Number(form.estimatedCost || 0) : undefined,
+          form.recipeId === "custom"
+            ? Number(form.estimatedCost || 0)
+            : undefined,
       }),
     });
     setForm((prev) => ({
@@ -127,7 +131,9 @@ export default function OrdersPage() {
           <input
             type="datetime-local"
             value={form.dueDate}
-            onChange={(e) => setForm((f) => ({ ...f, dueDate: e.target.value }))}
+            onChange={(e) =>
+              setForm((f) => ({ ...f, dueDate: e.target.value }))
+            }
             className="w-full rounded-lg border border-gray-200 px-3 py-2"
           />
           <div className="grid grid-cols-2 gap-2">
@@ -254,5 +260,3 @@ export default function OrdersPage() {
     </div>
   );
 }
-
-

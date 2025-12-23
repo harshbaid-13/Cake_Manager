@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useEffect, useMemo, useState } from "react";
 
@@ -52,7 +52,9 @@ export default function RecipesPage() {
     pricePerUnit: "",
     unitSize: "",
   });
-  const [ingredientEdits, setIngredientEdits] = useState<Record<string, IngredientEdit>>({});
+  const [ingredientEdits, setIngredientEdits] = useState<
+    Record<string, IngredientEdit>
+  >({});
   const [recipeForm, setRecipeForm] = useState(emptyRecipeForm);
   const [savingIngredient, setSavingIngredient] = useState(false);
   const [savingRecipe, setSavingRecipe] = useState(false);
@@ -71,8 +73,8 @@ export default function RecipesPage() {
             pricePerUnit: String(i.pricePerUnit ?? ""),
             unitSize: i.unitSize,
           },
-        ]),
-      ),
+        ])
+      )
     );
   };
 
@@ -84,7 +86,9 @@ export default function RecipesPage() {
   };
 
   useEffect(() => {
-    void Promise.all([loadIngredients(), loadRecipes()]);
+    void (async () => {
+      await Promise.all([loadIngredients(), loadRecipes()]);
+    })();
   }, []);
 
   const submitIngredient = async (e: React.FormEvent) => {
@@ -135,13 +139,16 @@ export default function RecipesPage() {
   const addIngredientRow = () =>
     setRecipeForm((prev) => ({
       ...prev,
-      ingredients: [...prev.ingredients, { ingredientId: "", quantityUsed: "" }],
+      ingredients: [
+        ...prev.ingredients,
+        { ingredientId: "", quantityUsed: "" },
+      ],
     }));
 
   const updateRecipeIngredient = (
     index: number,
     field: "ingredientId" | "quantityUsed",
-    value: string,
+    value: string
   ) =>
     setRecipeForm((prev) => {
       const next = [...prev.ingredients];
@@ -177,7 +184,7 @@ export default function RecipesPage() {
       method,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(
-        recipeForm.id ? { id: recipeForm.id, ...payload } : payload,
+        recipeForm.id ? { id: recipeForm.id, ...payload } : payload
       ),
     });
 
@@ -214,12 +221,12 @@ export default function RecipesPage() {
   const recipeCta = savingRecipe
     ? "Saving..."
     : recipeForm.id
-      ? "Save Changes"
-      : "Create Recipe";
+    ? "Save Changes"
+    : "Create Recipe";
 
   const ingredientOptions = useMemo(
     () => ingredients.map((ing) => ({ value: ing.id, label: ing.name })),
-    [ingredients],
+    [ingredients]
   );
 
   return (
@@ -242,7 +249,10 @@ export default function RecipesPage() {
             <input
               value={ingredientForm.pricePerUnit}
               onChange={(e) =>
-                setIngredientForm((f) => ({ ...f, pricePerUnit: e.target.value }))
+                setIngredientForm((f) => ({
+                  ...f,
+                  pricePerUnit: e.target.value,
+                }))
               }
               placeholder="Price (₹)"
               inputMode="decimal"
@@ -273,7 +283,9 @@ export default function RecipesPage() {
               className="space-y-2 rounded-xl border border-gray-100 bg-gray-50 px-3 py-3"
             >
               <div className="flex items-center justify-between">
-                <p className="text-sm font-semibold text-gray-900">{ing.name}</p>
+                <p className="text-sm font-semibold text-gray-900">
+                  {ing.name}
+                </p>
                 <button
                   onClick={() => deleteIngredient(ing.id)}
                   className="text-xs text-red-500 underline"
@@ -300,7 +312,9 @@ export default function RecipesPage() {
                   className="rounded-lg border border-gray-200 px-3 py-2 text-sm"
                 />
                 <input
-                  value={ingredientEdits[ing.id]?.pricePerUnit ?? ing.pricePerUnit}
+                  value={
+                    ingredientEdits[ing.id]?.pricePerUnit ?? ing.pricePerUnit
+                  }
                   onChange={(e) =>
                     setIngredientEdits((prev) => ({
                       ...prev,
@@ -498,5 +512,3 @@ export default function RecipesPage() {
     </div>
   );
 }
-
-

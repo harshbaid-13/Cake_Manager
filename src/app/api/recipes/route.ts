@@ -51,7 +51,7 @@ export async function POST(request: Request) {
 
   if (items?.length) {
     await db.insert(recipeIngredients).values(
-      items.map((item: any) => ({
+      items.map((item: { ingredientId: string; quantityUsed: string }) => ({
         recipeId: recipe.id,
         ingredientId: item.ingredientId,
         quantityUsed: item.quantityUsed?.toString(),
@@ -81,7 +81,7 @@ export async function PATCH(request: Request) {
     await db.delete(recipeIngredients).where(eq(recipeIngredients.recipeId, id));
     if (items.length) {
       await db.insert(recipeIngredients).values(
-        items.map((item: any) => ({
+        items.map((item: { ingredientId: string; quantityUsed: string }) => ({
           recipeId: id,
           ingredientId: item.ingredientId,
           quantityUsed: item.quantityUsed?.toString(),

@@ -18,14 +18,14 @@ export default async function Home() {
     {
       label: "Hours Worked",
       value: `${metrics.hoursWorked}h (${formatCurrency(
-        metrics.effectiveHourlyRate,
+        metrics.effectiveHourlyRate
       )}/hr)`,
     },
   ];
 
   return (
     <div className="space-y-4">
-      <section className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+      <section className="grid grid-cols-2 gap-3 sm:grid-cols-2">
         {cards.map((card) => (
           <div
             key={card.label}
@@ -41,14 +41,14 @@ export default async function Home() {
 
       <SessionTimer />
 
-      <section className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
+      {/* <section className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
         <h2 className="text-lg font-semibold text-gray-900">Workflow</h2>
         <p className="mt-1 text-sm text-gray-600">
           Add expenses right after shopping, start/stop kitchen sessions while
           baking, and create orders with either standard recipes or custom
           costing.
         </p>
-      </section>
+      </section> */}
     </div>
   );
 }
